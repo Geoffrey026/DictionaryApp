@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // Jika tema khusus belum ada, Anda bisa menggunakan MaterialTheme
+
             MaterialTheme {
                 DictionaryApp()
             }
@@ -51,7 +51,7 @@ fun DictionaryApp() {
                     .padding(padding)
                     .padding(16.dp)
             ) {
-                // Input field for the word
+
                 TextField(
                     value = word,
                     onValueChange = { word = it },
@@ -64,7 +64,7 @@ fun DictionaryApp() {
                         keyboardType = KeyboardType.Text
                     ),
                     keyboardActions = KeyboardActions(onSearch = {
-                        keyboardController?.hide()  // Hide keyboard after search
+                        keyboardController?.hide()
                         coroutineScope.launch {
                             definition = withContext(Dispatchers.IO) {
                                 fetchDefinition(word)
@@ -78,7 +78,7 @@ fun DictionaryApp() {
                 // Search Button
                 Button(
                     onClick = {
-                        keyboardController?.hide()  // Hide keyboard after button click
+                        keyboardController?.hide()
                         coroutineScope.launch {
                             definition = withContext(Dispatchers.IO) {
                                 fetchDefinition(word)
@@ -92,7 +92,7 @@ fun DictionaryApp() {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Result Text
+
                 Text(
                     text = definition,
                     modifier = Modifier
@@ -115,8 +115,8 @@ suspend fun fetchDefinition(word: String): String {
     return try {
         Log.d("DictionaryApp", "Fetching definition for word: $word")
         val response = client.newCall(request).execute()
-        val responseBody = response.body?.string() // Read the response body once
-        Log.d("DictionaryApp", "API Response: $responseBody")  // Log the full response body
+        val responseBody = response.body?.string()
+        Log.d("DictionaryApp", "API Response: $responseBody")
 
         if (!response.isSuccessful) {
             return "Word not found. (${response.code})"
@@ -128,7 +128,7 @@ suspend fun fetchDefinition(word: String): String {
 
         parseDefinition(responseBody)
     } catch (e: Exception) {
-        Log.e("DictionaryApp", "Error fetching definition", e) // Log the exception
+        Log.e("DictionaryApp", "Error fetching definition", e)
         "Error fetching definition: ${e.message ?: "Unknown error"}"
     }
 }
@@ -154,7 +154,7 @@ fun parseDefinition(jsonData: String): String {
 @Composable
 @Preview
 fun PreviewDictionaryApp() {
-    // Jika tema belum dibuat, gunakan tema default MaterialTheme
+
     MaterialTheme {
         DictionaryApp()
     }
